@@ -1,10 +1,7 @@
 package org.elastest.elastest_demo_sip_test;
 
 import static org.junit.Assert.*;
-
 import java.io.IOException;
-
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 public class RunSippTest {
@@ -19,19 +16,13 @@ public class RunSippTest {
 
 		try {
 			p.waitFor();
-			String output = IOUtils.toString(p.getInputStream());
-			String errorOutput = IOUtils.toString(p.getErrorStream());
-			System.out.println(output);
-			System.err.println(errorOutput);
+
 			if (p.exitValue() == 0) {
 				assertTrue("OK", true);
 			} else {
 				assertFalse("ERROR", false);
 			}
 		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -42,6 +33,15 @@ public class RunSippTest {
 		Process p = null;
 		try {
 			p = Runtime.getRuntime().exec(command);
+			java.io.InputStream is = p.getInputStream();
+			java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+			String val = "";
+			if (s.hasNext()) {
+				val = s.next();
+			} else {
+				val = "";
+			}
+			System.out.println(val);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
