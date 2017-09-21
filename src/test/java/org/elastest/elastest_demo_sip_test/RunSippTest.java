@@ -1,7 +1,11 @@
 package org.elastest.elastest_demo_sip_test;
 
 import static org.junit.Assert.*;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+
 import org.junit.Test;
 
 public class RunSippTest {
@@ -33,18 +37,37 @@ public class RunSippTest {
 		Process p = null;
 		try {
 			p = Runtime.getRuntime().exec(command);
-			java.io.InputStream is = p.getInputStream();
-			java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
-			String val = "";
-			if (s.hasNext()) {
-				val = s.next();
-			} else {
-				val = "";
-			}
-			System.out.println(val);
+			this.printOut(p);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return p;
+	}
+
+	public void printOut(Process proc) {
+		BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+
+		BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+
+		// read the output from the command
+		String s = null;
+		try {
+			while ((s = stdInput.readLine()) != null) {
+				System.out.println(s);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// read any errors from the attempted command
+		try {
+			while ((s = stdError.readLine()) != null) {
+				System.err.println(s);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
