@@ -16,7 +16,7 @@ public class RunSippTest {
 		if (ip == null || ip == "") {
 			ip = "172.16.1.11";
 		}
-		Process p = this.exec("sipp -sn uac -m 1 " + ip);
+		Process p = this.exec("sipp -nostdin -sn uac -m 1 " + ip);
 
 		try {
 			p.waitFor();
